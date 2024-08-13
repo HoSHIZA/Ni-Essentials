@@ -1,0 +1,20 @@
+.reference-field {
+    
+}
+
+.reference-field__header {
+    flex-direction: row;
+}
+
+.reference-field__header > Toggle {
+    margin-right: -3px;
+}
+
+.reference-field__header > TypePickerField {
+    flex-grow: 1;
+    margin-left: 0;
+}
+
+/*.reference-field__header > TypePickerField > .unity-base-field__label {*/
+/*    min-width: 125px;*/
+/*}*/

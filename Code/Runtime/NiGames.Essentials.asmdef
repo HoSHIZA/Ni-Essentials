@@ -1,0 +1,37 @@
+{
+    "name": "NiGames.Essentials",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.collections",
+            "expression": "",
+            "define": "HAS_UNITY_COLLECTION"
+        },
+        {
+            "name": "com.unity.burst",
+            "expression": "",
+            "define": "HAS_UNITY_BURST"
+        },
+        {
+            "name": "com.unity.mathematics",
+            "expression": "",
+            "define": "HAS_UNITY_MATHEMATICS"
+        },
+        {
+            "name": "com.unity.textmeshpro",
+            "expression": "",
+            "define": "ENABLE_TEXT_MESH_PRO"
+        }
+    ],
+    "noEngineReferences": false
+}

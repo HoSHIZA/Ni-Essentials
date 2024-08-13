@@ -1,0 +1,38 @@
+﻿.picker-field
+{
+    flex-shrink: 1;
+}
+
+.picker-field__input
+{
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+}
+
+.picker-field__input__button
+{
+    flex-grow: 1;
+    margin: 0;
+    padding: 0 3px 1px 3px;
+}
+
+.picker-field__input__button__icon
+{
+    min-height: 12px;
+    max-height: 12px;
+    min-width: 12px;
+    max-width: 12px;
+    margin: 1px 5px 0 0;
+    align-self: center;
+}
+
+.picker-field__input__button__label
+{
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-top: 1px;
+    margin-bottom: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

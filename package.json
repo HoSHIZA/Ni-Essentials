@@ -1,0 +1,20 @@
+﻿{
+    "name": "com.ni-games.essentials",
+    "version": "1.0.0",
+    "displayName": "Ni Essentials",
+    "description": "Essentials content for most of the NiGames modules.",
+    "unity": "2022.2",
+    "documentationUrl": "",
+    "dependencies": {},
+    "optionalDependencies": {},
+    "keywords": [
+        "NiGames",
+        "NiEssentials",
+        "Essentials"
+    ],
+    "author": {
+        "name": "HoSHIZA",
+        "email": "hoshiza78@gmail.com",
+        "url": "https://github.com/HoSHIZA"
+    }
+}
