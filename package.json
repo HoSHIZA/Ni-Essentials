@@ -5,7 +5,9 @@
     "description": "Essentials content for most of the NiGames modules.",
     "unity": "2022.2",
     "documentationUrl": "",
-    "dependencies": {},
+    "dependencies": {
+        "com.unity.textmeshpro": "3.0.6"
+    },
     "optionalDependencies": {},
     "keywords": [
         "NiGames",
