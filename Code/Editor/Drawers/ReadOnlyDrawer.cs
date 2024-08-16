@@ -1,5 +1,6 @@
-﻿#if !DISABLE_NIGAMES_INSPECTOR_ATTRIBUTES_FEATURE
+﻿#if !NIGAMES_INSPECTOR_ATTRIBUTES_DISABLE
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace NiGames.Essentials.Editor
@@ -9,10 +10,8 @@ namespace NiGames.Essentials.Editor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            var field = base.CreatePropertyGUI(property);
-            
+            var field = new PropertyField(property);
             field.SetEnabled(false);
-
             return field;
         }
     }

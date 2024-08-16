@@ -2,22 +2,31 @@
 using System.Runtime.CompilerServices;
 using NiGames.Essentials.Unsafe;
 
-namespace NiGames.Essentials
+namespace NiGames.Essentials.Easing
 {
     public static class EaseUtility
     {
+        /// <summary>
+        /// Evaluates <c>t</c> with the given <c>ease</c>.
+        /// </summary>
         [MethodImpl(256)]
         public static float Evaluate(float t, Ease ease)
         {
             return GetFunction(ease).Invoke(t);
         }
         
+        /// <summary>
+        /// Evaluates <c>t</c> with the given ease <c>type</c> and <c>power</c>.
+        /// </summary>
         [MethodImpl(256)]
         public static float Evaluate(float t, EaseType type, EasePower power)
         {
             return GetFunction(type, power).Invoke(t);
         }
         
+        /// <summary>
+        /// Get the function corresponding to <c>ease</c>, if <c>ease</c> is equal to <c>Ease.Custom</c>, returns <c>customFunc</c>.
+        /// </summary>
         [MethodImpl(256)]
         public static Func<float, float> GetFunction(Ease ease, Func<float, float> customFunc)
         {
@@ -26,139 +35,154 @@ namespace NiGames.Essentials
                 : GetFunction(ease);
         }
         
+        /// <summary>
+        /// Get an unsafe delegate pointer corresponding to <c>ease</c>.
+        /// </summary>
         [MethodImpl(256)]
         public static unsafe delegate*<float, float> GetFunctionPtr(Ease ease)
         {
             return GetFunction(ease).Method.MethodHandle.GetFunctionPointer().ToDelegate<float, float>();
         }
         
+        /// <summary>
+        /// Get an unsafe delegate pointer corresponding to ease <c>type</c> and <c>power</c>.
+        /// </summary>
         [MethodImpl(256)]
         public static unsafe delegate*<float, float> GetFunctionPtr(EaseType type, EasePower power)
         {
             return GetFunction(type, power).Method.MethodHandle.GetFunctionPointer().ToDelegate<float, float>();
         }
         
+        /// <summary>
+        /// Get the function corresponding to <c>ease</c>.
+        /// </summary>
         public static Func<float, float> GetFunction(Ease ease)
         {
             switch (ease)
             {
-                case Ease.Linear:            return Easing.Linear;
-                case Ease.InQuad:            return Easing.InQuad;
-                case Ease.OutQuad:           return Easing.OutQuad;
-                case Ease.InOutQuad:         return Easing.InOutQuad;
-                case Ease.InCubic:           return Easing.InCubic;
-                case Ease.OutCubic:          return Easing.OutCubic;
-                case Ease.InOutCubic:        return Easing.InOutCubic;
-                case Ease.InQuart:           return Easing.InQuart;
-                case Ease.OutQuart:          return Easing.OutQuart;
-                case Ease.InOutQuart:        return Easing.InOutQuart;
-                case Ease.InQuint:           return Easing.InQuint;
-                case Ease.OutQuint:          return Easing.OutQuint;
-                case Ease.InOutQuint:        return Easing.InOutQuint;
-                case Ease.InSine:            return Easing.InSine;
-                case Ease.OutSine:           return Easing.OutSine;
-                case Ease.InOutSine:         return Easing.InOutSine;
-                case Ease.InExpo:            return Easing.InExpo;
-                case Ease.OutExpo:           return Easing.OutExpo;
-                case Ease.InOutExpo:         return Easing.InOutExpo;
-                case Ease.InCirc:            return Easing.InCirc;
-                case Ease.OutCirc:           return Easing.OutCirc;
-                case Ease.InOutCirc:         return Easing.InOutCirc;
-                case Ease.InBack:            return Easing.InBack;
-                case Ease.OutBack:           return Easing.OutBack;
-                case Ease.InOutBack:         return Easing.InOutBack;
-                case Ease.InElastic:         return Easing.InElastic;
-                case Ease.OutElastic:        return Easing.OutElastic;
-                case Ease.InOutElastic:      return Easing.InOutElastic;
-                case Ease.InBounce:          return Easing.InBounce;
-                case Ease.OutBounce:         return Easing.OutBounce;
-                case Ease.InOutBounce:       return Easing.InOutBounce;
-                default:                     return Easing.Linear;
+                case Ease.Linear:            return EaseFunction.Linear;
+                case Ease.InQuad:            return EaseFunction.InQuad;
+                case Ease.OutQuad:           return EaseFunction.OutQuad;
+                case Ease.InOutQuad:         return EaseFunction.InOutQuad;
+                case Ease.InCubic:           return EaseFunction.InCubic;
+                case Ease.OutCubic:          return EaseFunction.OutCubic;
+                case Ease.InOutCubic:        return EaseFunction.InOutCubic;
+                case Ease.InQuart:           return EaseFunction.InQuart;
+                case Ease.OutQuart:          return EaseFunction.OutQuart;
+                case Ease.InOutQuart:        return EaseFunction.InOutQuart;
+                case Ease.InQuint:           return EaseFunction.InQuint;
+                case Ease.OutQuint:          return EaseFunction.OutQuint;
+                case Ease.InOutQuint:        return EaseFunction.InOutQuint;
+                case Ease.InSine:            return EaseFunction.InSine;
+                case Ease.OutSine:           return EaseFunction.OutSine;
+                case Ease.InOutSine:         return EaseFunction.InOutSine;
+                case Ease.InExpo:            return EaseFunction.InExpo;
+                case Ease.OutExpo:           return EaseFunction.OutExpo;
+                case Ease.InOutExpo:         return EaseFunction.InOutExpo;
+                case Ease.InCirc:            return EaseFunction.InCirc;
+                case Ease.OutCirc:           return EaseFunction.OutCirc;
+                case Ease.InOutCirc:         return EaseFunction.InOutCirc;
+                case Ease.InBack:            return EaseFunction.InBack;
+                case Ease.OutBack:           return EaseFunction.OutBack;
+                case Ease.InOutBack:         return EaseFunction.InOutBack;
+                case Ease.InElastic:         return EaseFunction.InElastic;
+                case Ease.OutElastic:        return EaseFunction.OutElastic;
+                case Ease.InOutElastic:      return EaseFunction.InOutElastic;
+                case Ease.InBounce:          return EaseFunction.InBounce;
+                case Ease.OutBounce:         return EaseFunction.OutBounce;
+                case Ease.InOutBounce:       return EaseFunction.InOutBounce;
+                default:                     return EaseFunction.Linear;
             }
         }
         
+        /// <summary>
+        /// Get the function corresponding to ease <c>type</c> and <c>power</c>.
+        /// </summary>
         public static Func<float, float> GetFunction(EaseType type, EasePower power)
         {
-            if (type is EaseType.Custom)     return Easing.Linear;
+            if (type is EaseType.Custom)     return EaseFunction.Linear;
             
             switch (power)
             {
-                case EasePower.Linear:       return Easing.Linear;
+                case EasePower.Linear:       return EaseFunction.Linear;
                 case EasePower.Quad:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InQuad;
-                        case EaseType.Out:   return Easing.OutQuad;
-                        case EaseType.InOut: return Easing.InOutQuad;
+                        case EaseType.In:    return EaseFunction.InQuad;
+                        case EaseType.Out:   return EaseFunction.OutQuad;
+                        case EaseType.InOut: return EaseFunction.InOutQuad;
                     } break;
                 case EasePower.Cubic:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InCubic;
-                        case EaseType.Out:   return Easing.OutCubic;
-                        case EaseType.InOut: return Easing.InOutCubic;
+                        case EaseType.In:    return EaseFunction.InCubic;
+                        case EaseType.Out:   return EaseFunction.OutCubic;
+                        case EaseType.InOut: return EaseFunction.InOutCubic;
                     } break;
                 case EasePower.Quart:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InQuart;
-                        case EaseType.Out:   return Easing.OutQuart;
-                        case EaseType.InOut: return Easing.InOutQuart;
+                        case EaseType.In:    return EaseFunction.InQuart;
+                        case EaseType.Out:   return EaseFunction.OutQuart;
+                        case EaseType.InOut: return EaseFunction.InOutQuart;
                     } break;
                 case EasePower.Quint:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InQuint;
-                        case EaseType.Out:   return Easing.OutQuint;
-                        case EaseType.InOut: return Easing.InOutQuint;
+                        case EaseType.In:    return EaseFunction.InQuint;
+                        case EaseType.Out:   return EaseFunction.OutQuint;
+                        case EaseType.InOut: return EaseFunction.InOutQuint;
                     } break;
                 case EasePower.Sine:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InSine;
-                        case EaseType.Out:   return Easing.OutSine;
-                        case EaseType.InOut: return Easing.InOutSine;
+                        case EaseType.In:    return EaseFunction.InSine;
+                        case EaseType.Out:   return EaseFunction.OutSine;
+                        case EaseType.InOut: return EaseFunction.InOutSine;
                     } break;
                 case EasePower.Expo:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InExpo;
-                        case EaseType.Out:   return Easing.OutExpo;
-                        case EaseType.InOut: return Easing.InOutExpo;
+                        case EaseType.In:    return EaseFunction.InExpo;
+                        case EaseType.Out:   return EaseFunction.OutExpo;
+                        case EaseType.InOut: return EaseFunction.InOutExpo;
                     } break;
                 case EasePower.Circ:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InCirc;
-                        case EaseType.Out:   return Easing.OutCirc;
-                        case EaseType.InOut: return Easing.InOutCirc;
+                        case EaseType.In:    return EaseFunction.InCirc;
+                        case EaseType.Out:   return EaseFunction.OutCirc;
+                        case EaseType.InOut: return EaseFunction.InOutCirc;
                     } break;
                 case EasePower.Back:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InBack;
-                        case EaseType.Out:   return Easing.OutBack;
-                        case EaseType.InOut: return Easing.InOutBack;
+                        case EaseType.In:    return EaseFunction.InBack;
+                        case EaseType.Out:   return EaseFunction.OutBack;
+                        case EaseType.InOut: return EaseFunction.InOutBack;
                     } break;
                 case EasePower.Elastic:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InElastic;
-                        case EaseType.Out:   return Easing.OutElastic;
-                        case EaseType.InOut: return Easing.InOutElastic;
+                        case EaseType.In:    return EaseFunction.InElastic;
+                        case EaseType.Out:   return EaseFunction.OutElastic;
+                        case EaseType.InOut: return EaseFunction.InOutElastic;
                     } break;
                 case EasePower.Bounce:
                     switch (type)
                     {
-                        case EaseType.In:    return Easing.InBounce;
-                        case EaseType.Out:   return Easing.OutBounce;
-                        case EaseType.InOut: return Easing.InOutBounce;
+                        case EaseType.In:    return EaseFunction.InBounce;
+                        case EaseType.Out:   return EaseFunction.OutBounce;
+                        case EaseType.InOut: return EaseFunction.InOutBounce;
                     } break;
             }
 
-            return Easing.Linear;
+            return EaseFunction.Linear;
         }
         
+        /// <summary>
+        /// Get <c>EaseType</c> corresponding to <c>ease</c>.
+        /// </summary>
         public static EaseType GetEaseType(Ease ease)
         {
             if (ease is Ease.Custom) return EaseType.Custom;
@@ -174,6 +198,9 @@ namespace NiGames.Essentials
             return EaseType.Custom;
         }
         
+        /// <summary>
+        /// Get <c>EasePower</c> corresponding to <c>ease</c>.
+        /// </summary>
         public static EasePower GetEasePower(Ease ease)
         {
             if (ease is Ease.Custom) return EasePower.Linear;

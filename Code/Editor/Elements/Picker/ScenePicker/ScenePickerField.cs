@@ -42,7 +42,10 @@ namespace NiGames.Essentials.Editor
                     
                     label ??= property.displayName;
                     
-                    BindingUtility.CreateBind(this, property, Getter, Setter, Comparer);
+                    BindingUtility.CreateBind(this, property, 
+                        getter: static prop => Getter(prop), 
+                        setter: static (prop, v) => Setter(prop, v), 
+                        comparer: static (value, prop, getter) => Comparer(value, prop, getter));
                 }
                 
                 evt.StopPropagation();

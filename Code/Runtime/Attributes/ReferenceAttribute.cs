@@ -1,4 +1,4 @@
-﻿#if !DISABLE_NIGAMES_INSPECTOR_ATTRIBUTES_FEATURE
+﻿#if !NIGAMES_INSPECTOR_ATTRIBUTES_DISABLE
 using System;
 using System.Diagnostics;
 using UnityEngine;
@@ -10,6 +10,9 @@ namespace NiGames.Essentials
     {
         public readonly Type BaseType;
         
+        /// <summary>
+        /// Indicate whether to draw a Custom PropertyDrawer for the selected managed object.
+        /// </summary>
         public bool DrawCustomReferenceDrawer { get; set; } = true;
         
         public ReferenceAttribute()

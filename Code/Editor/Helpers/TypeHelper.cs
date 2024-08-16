@@ -108,20 +108,19 @@ namespace NiGames.Essentials.Editor
             
             return TypeCache.GetTypesDerivedFrom(baseType)
                 .Where(t =>
-                    !t.IsGenericType &&
                     !typeof(Object).IsAssignableFrom(t) &&
-                    AbstractCheck(t) &&
                     GenericCheck(t) &&
+                    AbstractCheck(t) &&
                     MemberTypeCheck(t) &&
                     SerializableCheck(t) &&
                     ConstructorCheck(t))
                 .ToArray();
             
             [MethodImpl(256)]
-            bool AbstractCheck(Type t) => @abstract || !t.IsAbstract;
+            bool GenericCheck(Type t) => !t.IsGenericType;
             
             [MethodImpl(256)]
-            bool GenericCheck(Type t) => !t.IsGenericType;
+            bool AbstractCheck(Type t) => @abstract || !t.IsAbstract;
             
             [MethodImpl(256)]
             bool MemberTypeCheck(Type t) => valueType && @class || (valueType ? t.IsValueType : !t.IsValueType);

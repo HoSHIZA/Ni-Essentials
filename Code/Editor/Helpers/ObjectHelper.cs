@@ -16,13 +16,11 @@ namespace NiGames.Essentials.Editor
         /// <returns></returns>
         public static ObjectsWithPaths GetObjectsWithPaths(Type type, bool includeDisabled)
         {
-            var objectList = new ObjectsWithPaths(type, includeDisabled);
-            
-            return objectList;
+            return new ObjectsWithPaths(type, includeDisabled);
         }
         
         /// <summary>
-        /// A struct that creates and describes objects and paths to them.
+        /// A class that creates and describes objects and paths to them.
         /// </summary>
         public sealed class ObjectsWithPaths
         {
@@ -45,14 +43,14 @@ namespace NiGames.Essentials.Editor
                     .Where(obj => obj.hideFlags is HideFlags.None or HideFlags.NotEditable)
                     .ToArray();
                 
-                var paths = objects.Select(GetObjectPath);
+                var paths = objects.Select(static obj => GetObjectPath(obj));
                 var commonPath = AssetDatabaseUtility.GetCommonAssetPath(paths.ToArray());
                 
                 Items = objects;
                 Paths = objects.Select(t =>
                 {
                     var path = AssetDatabaseUtility.GetAssetPath(t).Substring(commonPath.Length);
-                    return path.Length > 0 ? path + t.name : t.name;
+                    return path.Length > 0 ? $"{path}{t.name}" : t.name;
                 }).ToArray();
             }
             

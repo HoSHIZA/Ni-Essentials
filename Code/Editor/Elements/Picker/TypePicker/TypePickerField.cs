@@ -76,21 +76,27 @@ namespace NiGames.Essentials.Editor
                 if (property.propertyType is SerializedPropertyType.ManagedReference or SerializedPropertyType.String)
                 {
                     if (binding != null) this.Unbind();
-
+                    
                     label ??= property.displayName;
-
+                    
                     if (property.propertyType == SerializedPropertyType.ManagedReference)
                     {
                         Type ??= property.GetManagedFieldType();
                         Filter = TypeFilterMask.SerializedReferencePreset;
                         
-                        BindingUtility.CreateBind(this, property, GetterManaged, SetterManaged, Comparer);
+                        BindingUtility.CreateBind(this, property, 
+                            getter: static prop => GetterManaged(prop), 
+                            setter: static (prop, v) => SetterManaged(prop, v), 
+                            comparer: static (value, prop, getter) => Comparer(value, prop, getter));
                     }
                     else if (property.propertyType == SerializedPropertyType.String)
                     {
                         Type ??= typeof(object);
-
-                        BindingUtility.CreateBind(this, property, GetterString, SetterString, Comparer);
+                        
+                        BindingUtility.CreateBind(this, property, 
+                            getter: static prop => GetterString(prop), 
+                            setter: static (prop, v) => SetterString(prop, v), 
+                            comparer: static (value, prop, getter) => Comparer(value, prop, getter));
                     }
                 }
                 

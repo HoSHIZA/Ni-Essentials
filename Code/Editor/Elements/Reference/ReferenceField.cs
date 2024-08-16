@@ -242,7 +242,7 @@ namespace NiGames.Essentials.Editor
                 ReferenceType ??= prop.GetManagedFieldType();
                 
                 if (binding != null) this.Unbind();
-                BindingUtility.BindManagedReference(this, prop, SetDataAndPopulate);
+                BindingUtility.BindManagedReference(this, prop, () => SetDataAndPopulate());
                 
                 SetDataAndPopulate();
                 

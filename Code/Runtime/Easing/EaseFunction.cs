@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-namespace NiGames.Essentials
+namespace NiGames.Essentials.Easing
 {
-    public static partial class Easing
+    public static partial class EaseFunction
     {
         #region Lambdas
         

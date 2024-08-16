@@ -1,4 +1,4 @@
-﻿namespace NiGames.Essentials
+﻿namespace NiGames.Essentials.Easing
 {
     public enum Ease
     {

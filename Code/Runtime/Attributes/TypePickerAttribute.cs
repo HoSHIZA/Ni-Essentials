@@ -22,7 +22,7 @@ namespace NiGames.Essentials
         HasAnyEmptyConstructor = 1 << 5,
     }
     
-#if !DISABLE_NIGAMES_INSPECTOR_ATTRIBUTES_FEATURE
+#if !NIGAMES_INSPECTOR_ATTRIBUTES_DISABLE
     [Conditional("UNITY_EDITOR")]
     public sealed class TypePickerAttribute : PropertyAttribute
     {
