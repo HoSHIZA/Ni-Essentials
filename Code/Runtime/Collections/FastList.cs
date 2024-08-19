@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -29,6 +30,7 @@ namespace NiGames.Essentials
         }
         
         public int Count => _count;
+        public int Length => _items.Length;
         
         public FastList(int capacity = 8)
         {
@@ -56,7 +58,29 @@ namespace NiGames.Essentials
             
             _items[_count++] = item;
         }
-
+        
+        [MethodImpl(256)]
+        public void Remove(T item)
+        {
+            for (var i = 0; i < Length; i++)
+            {
+                if (EqualityComparer<T>.Default.Equals(_items[i], item))
+                {
+                    _count--;
+                    if (i < _count)
+                    {
+                        Array.Copy(_items, i + 1, _items, i, _count - i);
+                    }
+                    
+                    _items[_count] = default;
+                    
+                    return;
+                }
+            }
+            
+            throw new ArgumentException(nameof(item));
+        }
+        
         [MethodImpl(256)]
         public void RemoveLast()
         {
@@ -111,6 +135,20 @@ namespace NiGames.Essentials
             {
                 SetCapacity(capacity);
             }
+        }
+
+        [MethodImpl(256)]
+        public int IndexOf(T item)
+        {
+            for (var i = 0; i < Length; i++)
+            {
+                if (EqualityComparer<T>.Default.Equals(_items[i], item))
+                {
+                    return i;
+                }
+            }
+            
+            return -1;
         }
         
         [MethodImpl(256)]
