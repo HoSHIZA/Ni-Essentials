@@ -56,7 +56,7 @@ namespace NiGames.Essentials
             [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
             private static void Init() => InitHelper.DomainSafeInit(ref _init, () =>
             {
-                PlayerLoopHelper.OnUpdate += static () => Update();
+                PlayerLoopHelper.AddCallback(PlayerLoopTiming.Update, static () => Update());
             });
             
             /// <summary>
@@ -90,11 +90,11 @@ namespace NiGames.Essentials
                 }
                 
                 // Resolution
-                fixed (void* lastResolution = &_lastResolution) 
+                fixed (void* lastResolutionPtr = &_lastResolution) 
                 {
                     var resolution = Screen.currentResolution;
                     
-                    if (NiUnsafe.MemCmp(lastResolution, &resolution, sizeof(Resolution)) == 0) return;
+                    if (NiUnsafe.MemCmp(lastResolutionPtr, &resolution, sizeof(Resolution)) == 0) return;
                     
                     _lastResolution = resolution;
                     
