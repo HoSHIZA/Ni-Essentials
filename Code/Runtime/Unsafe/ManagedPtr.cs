@@ -35,5 +35,15 @@ namespace NiGames.Essentials.Unsafe
         {
             return other._ptr == _ptr;
         }
+        
+        public static implicit operator ManagedPtr<T>(T value)
+        {
+            return new ManagedPtr<T>(value);
+        }
+        
+        public static implicit operator T(ManagedPtr<T> ptr)
+        {
+            return ptr.Value;
+        }
     }
 }
