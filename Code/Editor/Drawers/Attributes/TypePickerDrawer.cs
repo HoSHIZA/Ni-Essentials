@@ -1,4 +1,4 @@
-﻿#if !NIGAMES_INSPECTOR_ATTRIBUTES_DISABLE
+﻿#if !NI_ESSENTIALS_INSPECTOR_ATTRIBUTES_DISABLE
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;

@@ -66,7 +66,7 @@ namespace NiGames.Essentials.Editor
                 
                 var icon = _getIcon.Invoke(item);
                 
-                var menus = _paths[index].Split('/');
+                var menus = path.Split('/');
                 var createIndex = -1;
                 
                 for (var i = 0; i < menus.Length - 1; i++)

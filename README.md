@@ -47,14 +47,27 @@ https://github.com/HoSHIZA/Ni-Essentials.git
 
 > ⚠️ All attributes are implemented via CustomPropertyDrawer, so they will work with any CustomEditor that supports CustomPropertyDrawer.
 
-> You can disable all attributes using the preprocessor directive `NIGAMES_INSPECTOR_ATTRIBUTES_DISABLE`.
+> You can disable all attributes using the preprocessor directive `NI_ESSENTIALS_INSPECTOR_ATTRIBUTES_DISABLE`.
 
 ### ReadOnly
 
 Makes the field in the inspector read-only.
 
+![Preview](.github/docs/images/attributes/read-only.png)
+
 ```csharp
-[SerializeField, ReadOnly] private int _readOnlyField;
+[ReadOnly] public int a;
+```
+
+### Title
+
+Adds a title with a separator line.
+
+![Preview](.github/docs/images/attributes/title.png)
+
+```csharp
+[Title("Header Text", LabelColor = "red", LineColor = "green")]
+public string a;
 ```
 
 ### Reference
@@ -62,6 +75,8 @@ Makes the field in the inspector read-only.
 Displays a field for selecting a managed reference in the inspector. When used, you must mark the desired classes with the `[System.Serializable]` attribute.<br>
 <br>
 Works only when paired with SerializeReference.
+
+![Preview](.github/docs/images/attributes/reference.png)
 
 ```csharp
 public interface IManagedObject {}
@@ -93,6 +108,8 @@ public class D : ISomeManagedObject {}
 Creates a dropdown menu in the inspector for selecting a scene.<br>
 <br>
 Applies only to a field of type `string` and returns the name of the scene.
+
+![Preview](.github/docs/images/attributes/scene.png)
 
 ```csharp
 [SerializeField, ScenePicker] private string _sceneName;
