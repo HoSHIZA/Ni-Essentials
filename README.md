@@ -97,10 +97,12 @@ public class C : IManagedObject {}
 [Serializable]
 public class D : ISomeManagedObject {}
 
-[SerializeReference, Reference] private IManagedObject _managedReferenceField;
+[Reference]
+public IManagedObject ManagedReferenceField;
 
 // Shows only objects inherited from `ISomeManagedObject` for selection.
-[SerializeReference, Reference(typeof(ISomeManagedObject))] private IManagedObject _managedReferenceField;
+[Reference(typeof(ISomeManagedObject))]
+public IManagedObject ManagedReferenceField;
 ```
 
 ### Scene Picker
@@ -112,7 +114,7 @@ Applies only to a field of type `string` and returns the name of the scene.
 ![Preview](.github/docs/images/attributes/scene.png)
 
 ```csharp
-[SerializeField, ScenePicker] private string _sceneName;
+[ScenePicker] public string SceneName;
 ```
 
 ### Type Picker
@@ -122,10 +124,10 @@ Creates a dropdown menu in the inspector for selecting a `Type`.<br>
 Applies only to a field of type `string` and returns AssemblyQualified type name.
 
 ```csharp
-[SerializeField, TypePicker] private string _typeName;
+[TypePicker] public string TypeName;
 
 // Get type.
-public Type Type => Type.GetType(_typeName);
+public Type Type => Type.GetType(TypeName);
 ```
 
 ### Object Picker
@@ -135,7 +137,7 @@ public Type Type => Type.GetType(_typeName);
 Creates a dropdown menu in the inspector for selecting a `UnityEngine.Object`.
 
 ```csharp
-[SerializeField, ObjectPicker] private Object _object;
+[ObjectPicker] public Object UnityObject;
 ```
 
 ## Collections
