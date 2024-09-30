@@ -8,7 +8,7 @@ namespace NiGames.Essentials.Components
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
-    [AddComponentMenu(Constants.Menu.UI + "Draggable Rect")]
+    [AddComponentMenu(Constants.Menu.Component.UI + "Drag/Draggable Rect")]
     public sealed class DraggableRect : UIBehaviour
     {
         [SerializeField] private bool _interactable = true;

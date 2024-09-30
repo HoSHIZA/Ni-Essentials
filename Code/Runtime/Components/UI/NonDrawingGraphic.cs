@@ -5,7 +5,7 @@ namespace NiGames.Essentials.Components
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CanvasRenderer))]
-    [AddComponentMenu(Constants.Menu.UI + "Non Drawing Graphic")]
+    [AddComponentMenu(Constants.Menu.Component.UI + "Non Drawing Graphic")]
     public class NonDrawingGraphic : MaskableGraphic
     {
         public override void SetMaterialDirty()

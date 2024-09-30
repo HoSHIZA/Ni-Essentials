@@ -31,6 +31,17 @@ https://github.com/HoSHIZA/Ni-Essentials.git
 ```
 
 ## Attributes
+
+### Misc
+<details>
+<summary><b>[InfoBox]</b>: Adds a HelpBox above the field.</summary>
+
+```csharp
+[InfoBox("Message", MessageType.Info)] public int a;
+```
+---
+</details>
+
 <details>
 <summary><b>[ReadOnly]</b>: Makes fields read-only in the inspector.</summary>
 
@@ -42,18 +53,7 @@ https://github.com/HoSHIZA/Ni-Essentials.git
 ---
 </details>
 
-<details>
-<summary><b>[Title]</b>: Adds a title with a separator line.</summary>
-
-![Preview](.github/docs/images/attributes/title.png)
-
-```csharp
-[Title("Header Text", LabelColor = "red", LineColor = "green")]
-public string a;
-```
----
-</details>
-
+### Decorators
 <details>
 <summary><b>[Reference]</b>: Displays a field for selecting managed references.</summary>
 
@@ -124,6 +124,37 @@ Applies only to a field of type string and returns AssemblyQualified type name.
 ```csharp
 [ObjectPicker] public Object UnityObject;
 ```
+</details>
+
+### Styling
+<details>
+<summary><b>[Title]</b>: Adds a title with a separator line.</summary>
+
+![Preview](.github/docs/images/attributes/title.png)
+
+```csharp
+[Title("Header Text", LabelColor = "red", LineColor = "green")]
+public string a;
+```
+---
+</details>
+
+<details>
+<summary><b>[HideLabel]</b>: Hides the label.</summary>
+
+```csharp
+[HideLabel] public string a;
+```
+---
+</details>
+
+<details>
+<summary><b>[LabelText]</b>: Sets a custom label.</summary>
+
+```csharp
+[LabelText("New Label")] public string a;
+```
+---
 </details>
 
 ## Components

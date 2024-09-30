@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 namespace NiGames.Essentials.Components
 {
     [DisallowMultipleComponent]
+    [AddComponentMenu(Constants.Menu.Component.UI + "Drag/Draggable Rect Handler")]
     public sealed class DraggableRectHandler : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
         [SerializeField] private PointerUnityEvent _onBeginDragEvent;

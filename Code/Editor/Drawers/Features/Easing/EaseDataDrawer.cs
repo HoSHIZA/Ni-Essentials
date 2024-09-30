@@ -24,7 +24,7 @@ namespace NiGames.Essentials.Editor
             };
             
             // ! Ease Type
-            var easeTypeField = new EnumField("Ease")
+            var easeTypeField = new EnumField(property.displayName)
             {
                 name = "ease-type",
                 style = { flexGrow = 1, },

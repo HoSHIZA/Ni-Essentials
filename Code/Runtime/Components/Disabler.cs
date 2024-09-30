@@ -5,7 +5,7 @@ namespace NiGames.Essentials.Components
 {
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(64000)]
-    [AddComponentMenu(Constants.Menu.COMPONENTS + "Disabler")]
+    [AddComponentMenu(Constants.Menu.Component.MISCELLANEOUS + "Disabler")]
     public sealed class Disabler : MonoBehaviour
     {
         [SerializeField] private Mode _mode = Mode.OnAwake;

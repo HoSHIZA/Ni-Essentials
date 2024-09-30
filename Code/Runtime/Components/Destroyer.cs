@@ -5,7 +5,7 @@ namespace NiGames.Essentials.Components
 {
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(64000)]
-    [AddComponentMenu(Constants.Menu.COMPONENTS + "Destroyer")]
+    [AddComponentMenu(Constants.Menu.Component.MISCELLANEOUS + "Destroyer")]
     public sealed class Destroyer : MonoBehaviour
     {
         [SerializeField] private Mode _mode = Mode.OnAwake;

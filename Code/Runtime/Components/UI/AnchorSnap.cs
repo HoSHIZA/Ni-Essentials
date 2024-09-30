@@ -11,7 +11,7 @@ namespace NiGames.Essentials.Components
     /// </remarks>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
-    [AddComponentMenu(Constants.Menu.UI + "Anchor Snap")]
+    [AddComponentMenu(Constants.Menu.Component.UI + "Anchor Snap")]
     public sealed class AnchorSnap : MonoBehaviour
     {
         public readonly struct Segment
