@@ -1,3 +1,4 @@
 using System.Runtime.CompilerServices;
+using NiGames.Essentials;
 
-[assembly: InternalsVisibleTo("NiGames.Essentials.Editor")]
+[assembly: InternalsVisibleTo(Constants.Assembly.EDITOR)]

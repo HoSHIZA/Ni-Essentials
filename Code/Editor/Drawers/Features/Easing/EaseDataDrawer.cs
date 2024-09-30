@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace NiGames.Essentials.Editor.Easing
+namespace NiGames.Essentials.Editor
 {
     [CustomPropertyDrawer(typeof(EaseData))]
     public sealed class EaseDataDrawer : PropertyDrawer

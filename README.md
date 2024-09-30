@@ -1,31 +1,19 @@
 # Ni-Essentials
-
 Ni-Essentials is a foundational module that provides a collection of basic utilities and functions commonly used across various projects. It serves as a generic toolkit to streamline development and maintain consistency across different modules and applications.
 
-> ⚠️ Documentation for all available methods, classes and structures is not complete at the moment. For more detailed information we recommend to study the code as well as the attached xml-comments.
-
-## Features
-
-- Various attributes for inspector, as well as corresponding VisualElement for UIToolkit.
-- Highly optimized custom collections.
-- Helpers to modify Unity PlayerLoop and keep track of Resolution changes.
-- Classes and extensions to help with unsafe.
-- Various utilities and extensions.
+> ⚠️ Documentation is incomplete. For detailed information, please refer to the code and XML comments.
 
 ## Requirements
-
 * Unity 2022.2 or later
 * Text Mesh Pro 3.0.6 or later
 
 ## Installation
 
 ### Manual
-
 1. Clone this repository or download the source files.
 2. Copy the `Ni-Essentials` folder into your Unity project's `Assets` directory.
 
 ### UPM
-
 1. Open Package Manager from Window > Package Manager.
 2. Click the "+" button > Add package from git URL.
 3. Enter the following URL:
@@ -35,7 +23,6 @@ https://github.com/HoSHIZA/Ni-Essentials.git
 ```
 
 ### Manual with `manifest.json`
-
 1. Open `manifest.json`.
 2. Add the following line to the file:
 
@@ -44,24 +31,19 @@ https://github.com/HoSHIZA/Ni-Essentials.git
 ```
 
 ## Attributes
-
-> ⚠️ All attributes are implemented via CustomPropertyDrawer, so they will work with any CustomEditor that supports CustomPropertyDrawer.
-
-> You can disable all attributes using the preprocessor directive `NI_ESSENTIALS_INSPECTOR_ATTRIBUTES_DISABLE`.
-
-### ReadOnly
-
-Makes the field in the inspector read-only.
+<details>
+<summary><b>[ReadOnly]</b>: Makes fields read-only in the inspector.</summary>
 
 ![Preview](.github/docs/images/attributes/read-only.png)
 
 ```csharp
 [ReadOnly] public int a;
 ```
+---
+</details>
 
-### Title
-
-Adds a title with a separator line.
+<details>
+<summary><b>[Title]</b>: Adds a title with a separator line.</summary>
 
 ![Preview](.github/docs/images/attributes/title.png)
 
@@ -69,12 +51,15 @@ Adds a title with a separator line.
 [Title("Header Text", LabelColor = "red", LineColor = "green")]
 public string a;
 ```
+---
+</details>
 
-### Reference
+<details>
+<summary><b>[Reference]</b>: Displays a field for selecting managed references.</summary>
 
-Displays a field for selecting a managed reference in the inspector. When used, you must mark the desired classes with the `[System.Serializable]` attribute.<br>
-<br>
-Works only when paired with SerializeReference.
+Displays a field for selecting a managed reference in the inspector. When used, you must mark the desired classes with the `[System.Serializable]` attribute.
+
+Works only when paired with `[SerializeReference]`.
 
 ![Preview](.github/docs/images/attributes/reference.png)
 
@@ -104,11 +89,12 @@ public IManagedObject ManagedReferenceField;
 [Reference(typeof(ISomeManagedObject))]
 public IManagedObject ManagedReferenceField;
 ```
+---
+</details>
 
-### Scene Picker
+<details>
+<summary><b>[ScenePicker]</b>: Creates a dropdown for selecting scenes.</summary>
 
-Creates a dropdown menu in the inspector for selecting a scene.<br>
-<br>
 Applies only to a field of type `string` and returns the name of the scene.
 
 ![Preview](.github/docs/images/attributes/scene.png)
@@ -116,64 +102,73 @@ Applies only to a field of type `string` and returns the name of the scene.
 ```csharp
 [ScenePicker] public string SceneName;
 ```
+---
+</details>
 
-### Type Picker
+<details>
+<summary><b>[TypePicker]</b>: Creates a dropdown for selecting Types.</summary>
 
-Creates a dropdown menu in the inspector for selecting a `Type`.<br>
-<br>
-Applies only to a field of type `string` and returns AssemblyQualified type name.
+Applies only to a field of type string and returns AssemblyQualified type name.
 
 ```csharp
 [TypePicker] public string TypeName;
-
-// Get type.
-public Type Type => Type.GetType(TypeName);
 ```
+---
+</details>
 
-### Object Picker
+<details>
+<summary><b>[ObjectPicker]</b>: Creates a dropdown for selecting UnityEngine.Objects.</summary>
 
-> ⚠️ Not recommended for use as there is a bug breaking the inspector.
-
-Creates a dropdown menu in the inspector for selecting a `UnityEngine.Object`.
+> ⚠️ May break inspector
 
 ```csharp
 [ObjectPicker] public Object UnityObject;
 ```
+</details>
 
 ## Components
 
-## Destroyed, Disabler, DontDestroyOnLoad
+### MonoBehaviour
+* <b>Destroyer</b>: Destroys the object when it is created.
+* <b>Disabler</b>: Disables the object when it is created.
+* <b>DontDestroyOnLoad</b>: Marks the object for DontDestroyOnLoad.
 
-MonoBehaviour components to disable, destroy and add to DontDestroyOnLoad.
+### UI
+<details>
+<summary><b>AnchorSnap</b>: Dynamic anchoring.</summary>
+
+![Preview](.github/docs/images/components/anchor-snap.png)
+
+</details>
+
+<details>
+<summary><b>NonDrawingGraphic</b>: MaskableGraphic designed for raycast.</summary>
+
+![Preview](.github/docs/images/components/non-drawing-graphic.png)
+
+</details>
+
+<details>
+<summary><b>DraggableRect</b>: Draggable Rect.</summary>
+</details>
 
 ## Collections
-
-### FastList
-
-A high-performance minimal array-based list implementation.
-
-## Easing
-
-Built-in set of `Func<float, float>` functions for easing, as well as a class of utilities to work with them.
+<details>
+<summary><b>FastList</b>: High-performance, minimal array-based list.</summary>
 
 ```csharp
-using NiPrefs.Essentianls.Easing;
-
-float t = 0.5f;
-float easedT = EaseUtility.Evaluate(t, Ease.InCubic); 
-float easedT = EaseUtility.Evaluate(t, Ease.InOutBounce);
-
-Func<float, float> easeFunc = EaseFunction.Linear;
+FastList<string> list = new FastList<string>(32);
 ```
+</details>
 
 ## Helpers
+<details>
+<summary><b>PlayerLoopHelper</b>: Modify Unity PlayerLoop and access callbacks.</summary>
 
-### PlayerLoopHelper
-
-Class to help modify Unity PlayerLoop. It allows you to add your own runners, and also provides access to PlayerLoop callbacks for each timing via static `Action`.
+It allows you to add your own runners, and also provides access to PlayerLoop callbacks for each timing via static `Action`.
 
 ```csharp
-using NiPrefs.Essentianls.Helpers;
+using NiGames.Essentianls.Helpers;
 
 public struct CustomUpdate { } // Update
 public struct CustomFixedUpdate { } // FixedUpdate
@@ -204,12 +199,15 @@ or...
 ```csharp
 PlayerLoopHelper.Subscribe(PlayerLoopTiming.EarlyUpdate, static () => { /* Action */ });
 ```
+---
+</details>
 
-### ScreenHelper
-
-Helps you keep track of changes in screen resolution or orientation.
+<details>
+<summary><b>ScreenHelper</b>: Track screen resolution and orientation changes.</summary>
 
 ```csharp
+using NiGames.Essentianls.Helpers;
+
 var isLandscape = ScreenHelper.IsLandscape;
 var isPortrait = ScreenHelper.IsPortrait;
 
@@ -218,55 +216,144 @@ ScreenHelper.OrientationChanged += newOrientation => { /* Action */ };
 
 ScreenHelper.SetPollingTime(2f); // Sets the polling time (in seconds). If 0, each frame is polled.
 ```
+---
+</details>
 
-### InitHelper
+<details>
+<summary><b>InitHelper</b>: Safe initialization with disabled domain reloading.</summary>
 
-Helps to safely initialize any values when domain reloading is disabled in the editor.
+```csharp
+using NiGames.Essentianls.Helpers;
 
-## Utility
+var isLandscape = ScreenHelper.IsLandscape;
+var isPortrait = ScreenHelper.IsPortrait;
 
-### AssetDatabaseUtility
+ScreenHelper.ResolutionChanged += newResolution => { /* Action */ };
+ScreenHelper.OrientationChanged += newOrientation => { /* Action */ };
 
-Class of utilities that slightly extends the capabilities of AssetDatabase.
-
-### ComplexConvert
-
-Class providing additional functionality for complex type conversion in different ways.
+ScreenHelper.SetPollingTime(2f); // Sets the polling time (in seconds). If 0, each frame is polled.
+```
+</details>
 
 ## Features
 
-### Blocker
+### Easing
 
-Class for creating a UI blocker that prevents an event from propagating further down the hierarchy.
+<details>
+<summary><b>Easing</b>: Built-in easing functions and utility class.</summary>
+
+```csharp
+using NiPrefs.Essentianls.Easing;
+
+float t = 0.5f;
+float easedT = EaseUtility.Evaluate(t, Ease.InCubic); 
+float easedT = EaseUtility.Evaluate(t, Ease.InOutBounce);
+
+Func<float, float> easeFunc = EaseFunction.Linear;
+```
+---
+</details>
+
+### UI
+
+<details>
+<summary><b>UI Blocker</b>: Create UI blockers to prevent event propagation.</summary>
+
+```csharp
+// TODO
+```
+---
+</details>
+
+### Pooling
+
+<details>
+<summary><b>AbstractPooledBuffer</b>: Used to implement the Builder pattern.</summary>
+
+Example Buffer implementation:
+```csharp
+public class SomeBuilderBuffer : AbstractPooledBuffer<SomeBuilderBuffer> 
+{
+    public bool Parameter1;
+    public string Parameter2;
+    
+    protected override void Reset()
+    {
+        Parameter1 = false;
+        Parameter2 = "default";
+    }
+}
+```
+
+Example Builder implementation:
+```csharp
+public struct SomeBuilder
+{
+    internal ushort Revision;
+    internal SomeBuilderBuffer Buffer;
+    
+    internal SomeBuilder(SomeBuilderBuffer buffer)
+    {
+        Revision = buffer.Revision;
+        Buffer = buffer;
+    }
+
+    public readonly SomeBuilder WithParameter1(bool value)
+    {
+        Buffer.Parameter1 = value;
+        return this;
+    }
+
+    public readonly SomeBuilder WithParameter2(string value)
+    {
+        Buffer.Parameter2 = value;
+        return this;
+    }
+    
+    public SomeObject Build() 
+    {
+        var result = new SomeObject(Buffer.Parameter1, Buffer.Parameter2);
+        
+        Buffer.Dispose();
+        
+        return result;
+    }
+}
+```
+
+Usage:
+```csharp
+SomeBuilderBuffer buffer = SomeBuilderBuffer.GetPooled();
+SomeBuilder builder = new SomeBuilder(buffer);
+
+builder.WithParameter1(true);
+
+SomeObject result = builder.Build();
+```
+---
+</details>
+
+### Other
+
+<details>
+<summary><b>Impl&lt;TInterface&gt;</b>: Allows you to reference objects with the specified interface in the inspector.</summary>
+
+```csharp
+// TODO
+```
+</details>
+
+## Utility
+* <b>AssetDatabaseUtility</b>: Extended AssetDatabase capabilities.
+* <b>ComplexConvert</b>: Additional complex type conversion methods.
 
 ## Unsafe
-
-### ManagedPtr
-
-Class that helps to safely get a pointer to a managed object from unmanaged code using `GCHandle`.
-
-### NiUnsafe
-
-Wrapper for many basic functions for memory manipulation.
-
-### NiUnsafe Extensions
-
-Extensions to make it easier to work with `IntPtr` when using different types and delegates.
-
-## Extensions
-
-TODO
-
-## TODO
-
-* Other miscellaneous collections.
-* Cryptography utilities.
-* Improvement of README.md.
+* <b>ManagedPtr</b>: Type for safely retrieve pointers to managed objects.
+* <b>NiUnsafe</b>: Wrapper for memory manipulation functions.
+* <b>NiUnsafeExtensions</b>: Simplify IntPtr operations.
 
 ## Known Bugs
-
 * Inspector breaks in some scenarios using `ObjectPickerField`. 
 
 ## License
-
 This project is licensed under the [MIT License](LICENSE).

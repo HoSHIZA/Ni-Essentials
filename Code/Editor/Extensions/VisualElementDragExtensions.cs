@@ -27,19 +27,21 @@ namespace NiGames.Essentials.Editor
 
     public static class VisualElementDragExtensions
     {
-        public static void MakeDraggable<TDraggable>(this TDraggable draggable) where TDraggable : VisualElement, IDraggable
+        public static void MakeDraggable<TDraggable>(this TDraggable draggable) 
+            where TDraggable : VisualElement, IDraggable
         {
             draggable.DragState = DragState.Idle;
             
-            draggable.RegisterCallback<MouseDownEvent>(OnMouseDown);
-            draggable.RegisterCallback<MouseMoveEvent>(OnMouseMove);
-            draggable.RegisterCallback<MouseUpEvent>(OnMouseUp);
+            draggable.RegisterCallback<MouseDownEvent>(static evt => OnMouseDown(evt));
+            draggable.RegisterCallback<MouseMoveEvent>(static evt => OnMouseMove(evt));
+            draggable.RegisterCallback<MouseUpEvent>(static evt => OnMouseUp(evt));
         }
 
-        public static void MakeDragReceiver<TReceiver>(this TReceiver receiver) where TReceiver : VisualElement, IDragReceiver
+        public static void MakeDragReceiver<TReceiver>(this TReceiver receiver) 
+            where TReceiver : VisualElement, IDragReceiver
         {
-            receiver.RegisterCallback<DragUpdatedEvent>(OnDragUpdated);
-            receiver.RegisterCallback<DragPerformEvent>(OnDragPerform);
+            receiver.RegisterCallback<DragUpdatedEvent>(static evt => OnDragUpdated(evt));
+            receiver.RegisterCallback<DragPerformEvent>(static evt => OnDragPerform(evt));
         }
 
         private static void OnMouseDown(MouseDownEvent evt)

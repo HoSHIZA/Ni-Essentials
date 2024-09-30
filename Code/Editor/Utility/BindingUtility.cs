@@ -154,7 +154,7 @@ namespace NiGames.Essentials.Editor
         {
             CreateBind(field, property,
                 getter: static prop => Getter(prop),
-                setter: (prop, value) => Setter(prop, value),
+                setter: (prop, value) => Setter(prop, value, onSet),
                 comparer: static (value, prop, getter) => Comparer(value, prop, getter));
             
             return;
@@ -164,7 +164,7 @@ namespace NiGames.Essentials.Editor
                 return prop.managedReferenceValue is T reference ? reference : default;
             }
             
-            void Setter(SerializedProperty prop, T value)
+            static void Setter(SerializedProperty prop, T value, Action onSet = null)
             {
                 Undo.RegisterCompleteObjectUndo(prop.serializedObject.targetObject, "Change reference");
                 
@@ -190,8 +190,8 @@ namespace NiGames.Essentials.Editor
         {
             CreateBind(foldout, property, 
                 getter: static prop => Getter(prop), 
-                setter: (prop, value) => Setter(prop, value), 
-                comparer: (value, prop, getter) => Comparer(value, prop, getter));
+                setter: (prop, value) => Setter(prop, value, onSet), 
+                comparer: static (value, prop, getter) => Comparer(value, prop, getter));
             
             return;
             
@@ -200,7 +200,7 @@ namespace NiGames.Essentials.Editor
                 return prop.isExpanded;
             }
             
-            void Setter(SerializedProperty prop, bool val)
+            static void Setter(SerializedProperty prop, bool val, Action onSet = null)
             {
                 prop.isExpanded = val;
                 

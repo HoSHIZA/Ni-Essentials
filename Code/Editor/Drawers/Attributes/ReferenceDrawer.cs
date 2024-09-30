@@ -1,5 +1,4 @@
-﻿#if !NI_ESSENTIALS_INSPECTOR_ATTRIBUTES_DISABLE
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
@@ -21,4 +20,3 @@ namespace NiGames.Essentials.Editor
         }
     }
 }
-#endif

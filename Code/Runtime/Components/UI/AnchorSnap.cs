@@ -11,11 +11,22 @@ namespace NiGames.Essentials.Components
     /// </remarks>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
-    [AddComponentMenu(MenuPath.COMPONENT_MENU_ROOT_UI + "Anchor Snap")]
+    [AddComponentMenu(Constants.Menu.UI + "Anchor Snap")]
     public sealed class AnchorSnap : MonoBehaviour
     {
-        [Tooltip("Number of equal segments in the grid. It is used for the accuracy of the setting.")]
-        [SerializeField] private int _segmentCount = 3;
+        public readonly struct Segment
+        {
+            public readonly Rect Rect;
+            public readonly Vector2 Anchor;
+
+            public Segment(Rect rect, Vector2 anchor)
+            {
+                Rect = rect;
+                Anchor = anchor;
+            }
+        }
+        
+        public const int SEGMENT_COUNT = 3;
         
         [Tooltip("Container in which the alignment will take place.")]
         [SerializeField] private RectTransform _container;
@@ -44,9 +55,9 @@ namespace NiGames.Essentials.Components
         {
             _container.pivot = Vector2.zero;
 
-            var totalSegments = _segmentCount * _segmentCount;
-            var segmentWidth = _container.rect.width / _segmentCount;
-            var segmentHeight = _container.rect.height / _segmentCount;
+            var totalSegments = SEGMENT_COUNT * SEGMENT_COUNT;
+            var segmentWidth = _container.rect.width / SEGMENT_COUNT;
+            var segmentHeight = _container.rect.height / SEGMENT_COUNT;
             
             if (_segments.Length != totalSegments)
             {
@@ -55,15 +66,26 @@ namespace NiGames.Essentials.Components
             
             for (var i = 0; i < totalSegments; i++)
             {
-                var column = i % _segmentCount;
-                var row = i / _segmentCount;
+                var column = i % SEGMENT_COUNT;
+                var row = i / SEGMENT_COUNT;
                 
                 var rect = new Rect(segmentWidth * column, segmentHeight * row, segmentWidth, segmentHeight);
-                
-                var anchor = new Vector2(
-                    column == 0 ? 0f : column == _segmentCount - 1 ? 1f : 0.5f,
-                    row == 0 ? 0f : row == _segmentCount - 1 ? 1f : 0.5f
-                );
+
+                var anchor = new Vector2
+                {
+                    x = column switch
+                    {
+                        0 => 0f,
+                        SEGMENT_COUNT - 1 => 1f,
+                        _ => 0.5f
+                    },
+                    y = row switch
+                    {
+                        0 => 0f,
+                        SEGMENT_COUNT - 1 => 1f,
+                        _ => 0.5f
+                    }
+                };
 
                 _segments[i] = new Segment(rect, anchor);
             }
@@ -87,21 +109,6 @@ namespace NiGames.Essentials.Components
                 RectTransform.localPosition = localPosition;
                     
                 break;
-            }
-        }
-        
-        /// <summary>
-        /// Struct that represents a segment in the grid.
-        /// </summary>
-        public readonly struct Segment
-        {
-            public readonly Rect Rect;
-            public readonly Vector2 Anchor;
-
-            public Segment(Rect rect, Vector2 anchor)
-            {
-                Rect = rect;
-                Anchor = anchor;
             }
         }
     }

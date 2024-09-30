@@ -1,5 +1,4 @@
-﻿#if !NI_ESSENTIALS_INSPECTOR_ATTRIBUTES_DISABLE
-using System;
+﻿using System;
 using System.Diagnostics;
 using UnityEngine;
 
@@ -25,4 +24,3 @@ namespace NiGames.Essentials
         }
     }
 }
-#endif
