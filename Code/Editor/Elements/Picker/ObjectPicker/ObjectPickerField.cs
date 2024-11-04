@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace NiGames.Essentials.Editor
+namespace NiGames.Essentials.Editor.UI
 {
 #if UNITY_2023_2_OR_NEWER
     [UxmlElement("ObjectPickerField")]

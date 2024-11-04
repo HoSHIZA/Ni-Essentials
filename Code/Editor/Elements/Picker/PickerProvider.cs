@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-namespace NiGames.Essentials.Editor
+namespace NiGames.Essentials.Editor.UI
 {
     public class PickerProvider<T> : ScriptableObject, ISearchWindowProvider 
         where T : class

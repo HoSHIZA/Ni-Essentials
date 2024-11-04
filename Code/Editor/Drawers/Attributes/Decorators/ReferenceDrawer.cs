@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using NiGames.Essentials.Editor.Elements;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
@@ -12,6 +13,7 @@ namespace NiGames.Essentials.Editor
             var attr = (ReferenceAttribute)attribute;
             
             var baseType = attr.BaseType ?? fieldInfo.FieldType;
+            
             var field = new ReferenceField(property.displayName, baseType, attr.DrawCustomReferenceDrawer);
             
             field.BindProperty(property);

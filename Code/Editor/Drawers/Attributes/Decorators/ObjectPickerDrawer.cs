@@ -2,7 +2,7 @@
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace NiGames.Essentials.Editor
+namespace NiGames.Essentials.Editor.UI
 {
     [CustomPropertyDrawer(typeof(ObjectPickerAttribute))]
     public sealed class ObjectPickerDrawer : PropertyDrawer

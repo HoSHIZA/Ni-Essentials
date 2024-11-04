@@ -16,6 +16,10 @@ namespace NiGames.Essentials
         /// Indicate whether to draw a Custom PropertyDrawer for the selected managed object.
         /// </summary>
         public bool DrawCustomReferenceDrawer = true;
+
+        public ReferenceAttribute()
+        {
+        }
         
         public ReferenceAttribute(Type baseType)
         {

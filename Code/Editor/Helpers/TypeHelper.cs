@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEditor;
 using Object = UnityEngine.Object;
+using Type = System.Type;
 
 namespace NiGames.Essentials.Editor
 {

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace NiGames.Essentials.Editor
+namespace NiGames.Essentials.Editor.UI
 {
 #if UNITY_2023_2_OR_NEWER
     [UxmlElement("TypePickerField")]
@@ -145,7 +145,7 @@ namespace NiGames.Essentials.Editor
                 return string.Equals(value, getter.Invoke(prop), StringComparison.Ordinal);
             }
         }
-
+        
         private class TypeProvider : PickerProvider<string>
         {
         }

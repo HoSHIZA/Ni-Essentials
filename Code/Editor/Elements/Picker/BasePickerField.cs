@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace NiGames.Essentials.Editor
+namespace NiGames.Essentials.Editor.UI
 {
     public abstract class BasePickerField<T> : BaseField<T> where T : class
     {

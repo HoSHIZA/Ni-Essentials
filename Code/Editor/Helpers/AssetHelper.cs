@@ -68,7 +68,7 @@ namespace NiGames.Essentials.Editor
                 
                 var objects = AssetDatabaseUtility.LoadAllAssetsWithType(type);
                 
-                var paths = objects.Select(AssetDatabaseUtility.GetAssetPath);
+                var paths = objects.Select(static o => AssetDatabaseUtility.GetAssetPath(o));
                 var commonPath = AssetDatabaseUtility.GetCommonAssetPath(paths.ToArray());
                 
                 Items = objects;

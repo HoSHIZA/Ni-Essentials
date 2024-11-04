@@ -1,0 +1,37 @@
+.tab-group {
+    margin-bottom: 8px;
+}
+
+.tab-group__tabs {
+    flex-direction: row;
+    border-bottom-width: 1px;
+    border-color: var(--unity-colors-default-border);
+}
+
+.tab-group__tab {
+    border-width: 1px;
+    border-bottom-width: 0;
+    border-color: var(--unity-colors-default-border);
+    border-radius: 3px 3px 0 0;
+    margin-right: 2px;
+    margin-bottom: 0;
+    padding: 4px 8px;
+    background-color: var(--unity-colors-button-background);
+    /*border-bottom-color: var(--unity-colors-app-toolbar-background);*/
+}
+
+.tab-group__tab:hover {
+    background-color: var(--unity-colors-button-background-hover);
+}
+
+.tab-group__tab--active {
+    background-color: var(--unity-colors-app-toolbar-background);
+}
+
+.tab-group__content {
+    padding: 8px;
+    border-width: 1px;
+    border-top-width: 0;
+    border-color: var(--unity-colors-default-border);
+    background-color: var(--unity-colors-app-toolbar-background);
+}

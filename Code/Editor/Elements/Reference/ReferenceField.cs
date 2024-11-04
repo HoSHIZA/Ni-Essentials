@@ -1,9 +1,10 @@
 ﻿using System;
+using NiGames.Essentials.Editor.UI;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace NiGames.Essentials.Editor
+namespace NiGames.Essentials.Editor.Elements
 {
 #if UNITY_2023_2_OR_NEWER
     [UxmlElement]
@@ -107,6 +108,11 @@ namespace NiGames.Essentials.Editor
             _foldoutToggle.name = "reference-foldout-toggle";
             
             contentContainer = _foldout.Q("unity-content");
+            
+            if (referenceType is { IsArray: true })
+            {
+                referenceType = referenceType.GetElementType();
+            }
             
             _typePicker = new TypePickerField(label, referenceType, TypeFilterMask.SerializedReferencePreset)
             {
@@ -265,7 +271,7 @@ namespace NiGames.Essentials.Editor
         public new class UxmlFactory : UxmlFactory<ReferenceField, UxmlTraits> { }
         public new class UxmlTraits : BindableElement.UxmlTraits
         {
-            private readonly UxmlStringAttributeDescription _label = new UxmlStringAttributeDescription { name = "label" };
+            private readonly UxmlStringAttributeDescription _label = new UxmlStringAttributeDescription { name = "label", defaultValue = "Reference Field" };
             private readonly UxmlTypeAttributeDescription<object> _type = new UxmlTypeAttributeDescription<object> { name = "type" };
             private readonly UxmlBoolAttributeDescription _drawCustomDrawer = new UxmlBoolAttributeDescription { name = "draw-custom-drawer", defaultValue = true };
 

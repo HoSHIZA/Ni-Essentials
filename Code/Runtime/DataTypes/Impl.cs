@@ -12,6 +12,10 @@ namespace NiGames.Essentials
     {
         [SerializeField] private Object _value;
         
-        public T Value => _value as T;
+        public T Value
+        {
+            get => _value as T;
+            set => _value = value as Object;
+        }
     }
 }
