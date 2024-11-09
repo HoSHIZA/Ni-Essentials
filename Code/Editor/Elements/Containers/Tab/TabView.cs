@@ -166,7 +166,7 @@ namespace NiGames.Essentials.Editor.UI
             {
                 var menu = new GenericDropdownMenu();
                 menu.AddItem("Reset", false, () => splitView.fixedPane.style.width = 120);
-                menu.DropDown(draglineAnchor.worldBound, draglineAnchor);
+                menu.DropDown(draglineAnchor.worldBound, draglineAnchor, false);
             }, _twoPaneSplitView);
             
             _horizontalScroller = new Scroller()
