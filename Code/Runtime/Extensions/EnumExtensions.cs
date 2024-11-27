@@ -19,7 +19,7 @@ namespace NiGames.Essentials
             return (T)(object)((int)(object)value ^ (int)(object)flag);
         }
         
-        public static bool HasFlag<T>(this T value, T flag) where T : struct, Enum
+        public static bool HasFlagFast<T>(this T value, T flag) where T : struct, Enum
         {
             return ((int)(object)value & (int)(object)flag) != 0;
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace NiGames.Essentials.Editor
 {
     [Serializable]
-    internal struct EditorIcon
+    public struct EditorIcon
     {
         [SerializeField] private string _unityIconName;
         [SerializeField] private Texture2D _texture;
