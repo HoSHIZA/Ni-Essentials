@@ -25,7 +25,7 @@ namespace NiGames.Essentials
             public static class Component
             {
                 public const string UI = "UI/" + ROOT;
-                public const string MISCELLANEOUS = UI + "Miscellaneous";
+                public const string MISCELLANEOUS = UI + "Miscellaneous/";
             }
         }
     }
