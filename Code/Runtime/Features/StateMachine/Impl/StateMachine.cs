@@ -25,8 +25,8 @@ namespace NiGames.Essentials.StateMachine
         
         private Dictionary<Type, State<T>> _states;
         
-        private Dictionary<Type, byte> _stateIdToType;
-        private Dictionary<byte, Type> _stateTypeToId;
+        private Dictionary<Type, byte> _stateTypeToId;
+        private Dictionary<byte, Type> _stateIdToType;
         
         private State<T> _initialState;
         private bool _init;
@@ -42,9 +42,8 @@ namespace NiGames.Essentials.StateMachine
             
             _states = new Dictionary<Type, State<T>>(states.Length);
 
-            for (var i = 0; i < states.Length; i++)
+            foreach (var state in states)
             {
-                var state = states[i];
                 state.SetStateMachine(this as T);
 
                 TryAddState(state);
@@ -132,7 +131,15 @@ namespace NiGames.Essentials.StateMachine
         /// </summary>
         public bool TryAddState(State<T> state)
         {
-            return _states.TryAdd(state.GetType(), state);
+            if (!_states.TryAdd(state.GetType(), state)) return false;
+            
+            var id = (byte)_stateTypeToId.Count;
+            var type = state.GetType();
+            
+            _stateTypeToId.Add(type, id);
+            _stateIdToType.Add(id, type);
+            
+            return true;
         }
         
         /// <summary>
@@ -197,7 +204,7 @@ namespace NiGames.Essentials.StateMachine
         
         protected State<T> GetStateById(byte stateId)
         {
-            var type = _stateTypeToId.GetValueOrDefault(stateId);
+            var type = _stateIdToType.GetValueOrDefault(stateId);
             
             return type == null ? null : _states.GetValueOrDefault(type);
         }
@@ -213,7 +220,7 @@ namespace NiGames.Essentials.StateMachine
             if (!silent)
             {
                 var stateType = state.GetType();
-                var stateId = _stateIdToType.GetValueOrDefault(stateType);
+                var stateId = _stateTypeToId.GetValueOrDefault(stateType);
                 var changeData = new StateChangeData(stateType, stateId);
             
                 OnStateChanged?.Invoke(changeData);
