@@ -14,20 +14,23 @@ namespace NiGames.Essentials.StateMachine
     /// </example>
     /// <typeparam name="T">The type of the state machine.</typeparam>
     [PublicAPI]
-    public abstract class StateMachine<T> where T : StateMachine<T>
+    public abstract class StateMachine<T> : IStateMachine
+        where T : StateMachine<T>
     {
-        public State<T> CurrentState { get; private set; }
+        public event Action<StateChangeData> OnStateChanged;
         
-        public event Action<Type> OnStateChanged;
+        public State<T> CurrentState { get; private set; }
+        public byte CurrentStateId { get; private set; }
+        public Type CurrentStateType => CurrentState.GetType();
         
         private Dictionary<Type, State<T>> _states;
-        private List<Transition<T>> _transitions = new();
+        
+        private Dictionary<Type, byte> _stateIdToType;
+        private Dictionary<byte, Type> _stateTypeToId;
         
         private State<T> _initialState;
         private bool _init;
         
-        public Type CurrentStateType => CurrentState.GetType();
-
         /// <summary>
         /// Sets up the state machine with an array of states, and initializes the current state.
         /// </summary>
@@ -38,14 +41,15 @@ namespace NiGames.Essentials.StateMachine
             if (_init) return;
             
             _states = new Dictionary<Type, State<T>>(states.Length);
-            
-            foreach (var state in states)
+
+            for (var i = 0; i < states.Length; i++)
             {
+                var state = states[i];
                 state.SetStateMachine(this as T);
-                
+
                 TryAddState(state);
             }
-            
+
             if (initUseFirstState && _states.Count > 0)
             {
                 SetInitialState(_states.First().Value.GetType());
@@ -58,29 +62,29 @@ namespace NiGames.Essentials.StateMachine
         /// Changes the current state of the state machine to the specified type of state.
         /// </summary>
         [MethodImpl(256)]
-        public bool ChangeState<TState>() where TState : State<T>
+        public bool ChangeState<TState>(bool silent = false) where TState : State<T>
         {
-            return ChangeState(typeof(TState));
+            return ChangeStateByType(typeof(TState), silent);
         }
         
         /// <summary>
         /// Changes the current state of the state machine to the specified type of state.
         /// </summary>
-        public bool ChangeState(Type type)
+        public bool ChangeStateByType(Type type, bool silent = false)
         {
-            var state = GetState(type);
+            var state = GetStateByType(type);
+
+            return SetStateInternal(state, silent);
+        }
+
+        /// <summary>
+        /// Changes the current state of the state machine to the specified type of state by id.
+        /// </summary>
+        public bool ChangeStateById(byte stateId, bool silent = false)
+        {
+            var state = GetStateById(stateId);
             
-            if (state == null) return false;
-            if (state == CurrentState) return false;
-            
-            CurrentState?.Exit();
-            CurrentState = state;
-            
-            OnStateChanged?.Invoke(CurrentState.GetType());
-            
-            CurrentState.Enter();
-            
-            return true;
+            return SetStateInternal(state, silent);
         }
         
         /// <summary>
@@ -99,6 +103,9 @@ namespace NiGames.Essentials.StateMachine
             return _states.ContainsKey(type);
         }
         
+        /// <summary>
+        /// Returns a value indicating whether the specified state belongs to the current state machine
+        /// </summary>
         public bool StateBelongsThisStateMachine(Type type)
         {
             return type.GetGenericArguments().Contains(typeof(StateMachine<T>));
@@ -129,40 +136,6 @@ namespace NiGames.Essentials.StateMachine
         }
         
         /// <summary>
-        /// Add 'state to state' transition to the state machine.
-        /// </summary>
-        public void AddTransition<TFrom, TTo>(Func<bool> condition)
-            where TFrom : State<T>
-            where TTo : State<T>
-        {
-            if (condition == null)
-            {
-                throw new ArgumentNullException(nameof(condition));
-            }
-            
-            var stateFrom = GetState(typeof(TFrom));
-            var stateTo = GetState(typeof(TTo));
-            
-            _transitions.Add(new Transition<T>(stateFrom, stateTo, condition));
-        }
-        
-        /// <summary>
-        /// Add 'any to state' transition to the state machine.
-        /// </summary>
-        public void AddAnyTransition<TTo>(TTo to, Func<bool> condition)
-            where TTo : State<T>
-        {
-            if (condition == null)
-            {
-                throw new ArgumentNullException(nameof(condition));
-            }
-            
-            var stateTo = GetState<TTo>();
-            
-            _transitions.Add(new Transition<T>(null, stateTo, condition));
-        }
-        
-        /// <summary>
         /// Sets the initial state of the state machine to the specified state type.
         /// </summary>
         /// <remarks>
@@ -186,53 +159,69 @@ namespace NiGames.Essentials.StateMachine
         {
             if (_init) return;
             
-            _initialState = GetState(type);
+            _initialState = GetStateByType(type);
             
-            ChangeState(_initialState.GetType());
+            ChangeStateByType(_initialState.GetType());
             
             _init = true;
         }
-
+        
         /// <summary>
-        /// Sets the state corresponding to the active transition.
+        /// Sets the initial state of the state machine to the specified state type by id.
         /// </summary>
-        protected void SetStateByTransition()
+        /// <remarks>
+        /// This method can only be called during the setup phase of the state machine, before any state changes
+        /// have occurred. If called after setup is complete, this method has no effect.
+        /// </remarks>
+        protected void SetInitialStateById(byte stateId)
         {
-            Transition<T>? bestTransition = null;
+            if (_init) return;
             
-            foreach (var transition in _transitions)
-            {
-                if (!transition.IsValid()) continue;
-                
-                var isAny = transition.From == null;
-                
-                if (!isAny && transition.From != CurrentState) continue;
-                if (!transition.Condition.Invoke()) continue;
-                
-                if (bestTransition == null || (isAny
-                        ? transition.Priority >= bestTransition.Value.Priority
-                        : transition.Priority > bestTransition.Value.Priority))
-                {
-                    bestTransition = transition;
-                }
-            }
+            _initialState = GetStateById(stateId);
             
-            if (!bestTransition.HasValue) return;
-            if (!bestTransition.Value.IsValid()) return;
-            if (bestTransition.Value.To == CurrentState) return;
-
-            ChangeState(bestTransition.Value.To.GetType());
+            ChangeStateByType(_initialState.GetType());
+            
+            _init = true;
         }
         
         [MethodImpl(256)]
-        private State<T> GetState<TState>()
+        protected State<T> GetState<TState>()
         {
-            return GetState(typeof(TState));
+            return GetStateByType(typeof(TState));
         }
         
-        private State<T> GetState(Type type)
+        protected State<T> GetStateByType(Type type)
         {
             return _states.GetValueOrDefault(type);
+        }
+        
+        protected State<T> GetStateById(byte stateId)
+        {
+            var type = _stateTypeToId.GetValueOrDefault(stateId);
+            
+            return type == null ? null : _states.GetValueOrDefault(type);
+        }
+        
+        protected virtual bool SetStateInternal(State<T> state, bool silent = false)
+        {
+            if (state == null) return false;
+            if (state == CurrentState) return false;
+            
+            CurrentState?.Exit();
+            CurrentState = state;
+            
+            if (!silent)
+            {
+                var stateType = state.GetType();
+                var stateId = _stateIdToType.GetValueOrDefault(stateType);
+                var changeData = new StateChangeData(stateType, stateId);
+            
+                OnStateChanged?.Invoke(changeData);
+            }
+            
+            CurrentState.Enter();
+            
+            return true;
         }
     }
 }
