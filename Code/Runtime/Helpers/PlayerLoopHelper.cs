@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using NiGames.Essentials.Collections;
 using NiGames.Essentials.PlayerLoop;
 using UnityEngine;
 using UnityEngine.LowLevel;

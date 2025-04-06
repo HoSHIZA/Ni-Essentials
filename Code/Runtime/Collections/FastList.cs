@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace NiGames.Essentials
+namespace NiGames.Essentials.Collections
 {
     /// <summary>
     /// Wrapper over an array with minimal list functionality.
