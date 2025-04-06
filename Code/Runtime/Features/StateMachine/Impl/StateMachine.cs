@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
+using NiGames.Essentials.Collections;
 
 namespace NiGames.Essentials.StateMachine
 {
@@ -13,7 +13,6 @@ namespace NiGames.Essentials.StateMachine
     /// class ExampleStateMachine : StateMachine<![CDATA[<ExampleStateMachine>]]>
     /// </example>
     /// <typeparam name="T">The type of the state machine.</typeparam>
-    [PublicAPI]
     public abstract class StateMachine<T> : IStateMachine
         where T : StateMachine<T>
     {
@@ -24,9 +23,7 @@ namespace NiGames.Essentials.StateMachine
         public Type CurrentStateType => CurrentState.GetType();
         
         private Dictionary<Type, State<T>> _states;
-        
-        private Dictionary<Type, byte> _stateTypeToId;
-        private Dictionary<byte, Type> _stateIdToType;
+        private BidirectionalDictionary<Type, byte> _statesMapping;
         
         private State<T> _initialState;
         private bool _init;
@@ -133,11 +130,10 @@ namespace NiGames.Essentials.StateMachine
         {
             if (!_states.TryAdd(state.GetType(), state)) return false;
             
-            var id = (byte)_stateTypeToId.Count;
+            var id = (byte)_statesMapping.Count;
             var type = state.GetType();
             
-            _stateTypeToId.Add(type, id);
-            _stateIdToType.Add(id, type);
+            _statesMapping.Add(type, id);
             
             return true;
         }
@@ -204,7 +200,7 @@ namespace NiGames.Essentials.StateMachine
         
         protected State<T> GetStateById(byte stateId)
         {
-            var type = _stateIdToType.GetValueOrDefault(stateId);
+            var type = _statesMapping.GetKeyOrDefault(stateId);
             
             return type == null ? null : _states.GetValueOrDefault(type);
         }
@@ -220,7 +216,7 @@ namespace NiGames.Essentials.StateMachine
             if (!silent)
             {
                 var stateType = state.GetType();
-                var stateId = _stateTypeToId.GetValueOrDefault(stateType);
+                var stateId = _statesMapping.GetValueOrDefault(stateType);
                 var changeData = new StateChangeData(stateType, stateId);
             
                 OnStateChanged?.Invoke(changeData);

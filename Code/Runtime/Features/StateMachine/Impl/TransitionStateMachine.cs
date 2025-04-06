@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 
 namespace NiGames.Essentials.StateMachine
 {
-    [PublicAPI]
     public abstract class TransitionStateMachine<T> : StateMachine<TransitionStateMachine<T>> 
         where T : TransitionStateMachine<T>
     {
