@@ -53,34 +53,47 @@ namespace NiGames.Essentials.StateMachine
                 _init = true;
             }
         }
-
+        
         /// <summary>
         /// Changes the current state of the state machine to the specified type of state.
         /// </summary>
-        [MethodImpl(256)]
-        public bool ChangeState<TState>(bool silent = false) where TState : State<T>
+        public bool ChangeState<TState>() where TState : State<T>
         {
-            return ChangeStateByType(typeof(TState), silent);
+            var state = GetStateByType(typeof(TState));
+            
+            return SetStateInternal(state);
         }
         
         /// <summary>
         /// Changes the current state of the state machine to the specified type of state.
         /// </summary>
-        public bool ChangeStateByType(Type type, bool silent = false)
+        public bool ChangeState<TState, TContext>(TContext context) 
+            where TState : State<T, TContext>
+            where TContext : IStateContext
+        {
+            var state = GetStateByType(typeof(TState));
+            
+            return SetStateInternal(state, context);
+        }
+        
+        /// <summary>
+        /// Changes the current state of the state machine to the specified type of state.
+        /// </summary>
+        public bool ChangeStateByType(Type type, IStateContext context = null)
         {
             var state = GetStateByType(type);
 
-            return SetStateInternal(state, silent);
+            return SetStateInternal(state, context);
         }
 
         /// <summary>
         /// Changes the current state of the state machine to the specified type of state by id.
         /// </summary>
-        public bool ChangeStateById(byte stateId, bool silent = false)
+        public bool ChangeStateById(byte stateId, IStateContext context = null)
         {
             var state = GetStateById(stateId);
             
-            return SetStateInternal(state, silent);
+            return SetStateInternal(state, context);
         }
         
         /// <summary>
@@ -187,7 +200,6 @@ namespace NiGames.Essentials.StateMachine
             _init = true;
         }
         
-        [MethodImpl(256)]
         protected State<T> GetState<TState>()
         {
             return GetStateByType(typeof(TState));
@@ -205,7 +217,7 @@ namespace NiGames.Essentials.StateMachine
             return type == null ? null : _states.GetValueOrDefault(type);
         }
         
-        protected virtual bool SetStateInternal(State<T> state, bool silent = false)
+        protected virtual bool SetStateInternal(State<T> state, IStateContext context = null)
         {
             if (state == null) return false;
             if (state == CurrentState) return false;
@@ -213,17 +225,21 @@ namespace NiGames.Essentials.StateMachine
             CurrentState?.Exit();
             CurrentState = state;
             
-            if (!silent)
+            var stateType = state.GetType();
+            var stateId = _statesMapping.GetValueOrDefault(stateType);
+            var changeData = new StateChangeData(stateType, stateId);
+            
+            OnStateChanged?.Invoke(changeData);
+            
+            if (context == null)
             {
-                var stateType = state.GetType();
-                var stateId = _statesMapping.GetValueOrDefault(stateType);
-                var changeData = new StateChangeData(stateType, stateId);
-            
-                OnStateChanged?.Invoke(changeData);
+                CurrentState.Enter();
             }
-            
-            CurrentState.Enter();
-            
+            else
+            {
+                CurrentState.Enter(context);
+            }
+
             return true;
         }
     }
