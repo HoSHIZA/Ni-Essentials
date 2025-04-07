@@ -38,6 +38,7 @@ namespace NiGames.Essentials.StateMachine
             if (_init) return;
             
             _states = new Dictionary<Type, State<T>>(states.Length);
+            _statesMapping = new BidirectionalDictionary<Type, byte>(states.Length);
 
             foreach (var state in states)
             {
