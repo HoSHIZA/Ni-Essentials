@@ -19,7 +19,7 @@ namespace NiGames.Essentials.StateMachine
         public event Action<StateChangeData> OnStateChanged;
         
         public State<T> CurrentState { get; private set; }
-        public byte CurrentStateId { get; private set; }
+        public byte CurrentStateId => _statesMapping.GetValueOrDefault(CurrentStateType);
         public Type CurrentStateType => CurrentState.GetType();
         
         private Dictionary<Type, State<T>> _states;
