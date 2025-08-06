@@ -79,17 +79,17 @@ namespace NiGames.Essentials
         #endregion
 
         #region Operators
-
+        
+        public static implicit operator T(Optional<T> value)
+        {
+            return value.Value;
+        }
+        
         public static implicit operator Optional<T>(T value)
         {
             return new Optional<T>(value);
         }
-
-        public static implicit operator Optional<T>(bool value)
-        {
-            return new Optional<T> { _hasValue = value };
-        }
-
+        
         public static bool operator ==(Optional<T> left, Optional<T> right)
         {
             return left.Equals(right);
